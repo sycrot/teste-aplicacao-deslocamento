@@ -1,5 +1,5 @@
 import axios from './axios-config'
-import { CreateVeiculoRes, Veiculo } from "@/app/types/veiculo";
+import { CreateVeiculoRes, UpdateVeiculoRes, Veiculo } from "@/app/types/veiculo";
 
 const URL = '/api/v1/Veiculo'
 
@@ -40,43 +40,43 @@ export const getById = async (id: number) => {
 }
 
 export const postVeiculo = async (veiculo: CreateVeiculoRes) => {
-  try {
-    const { data, status } = await axios.post<CreateVeiculoRes>(
-      `${URL}`,
-      { veiculo },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+  const { data, status } = await axios.post<CreateVeiculoRes>(
+    `${URL}`,
+    {
+      placa: veiculo.placa,
+      marcaModelo: veiculo.marcaModelo,
+      anoFabricacao: veiculo.anoFabricacao,
+      kmAtual: veiculo.kmAtual
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    },
+  )
 
-    return data
-  } catch(error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
-export const updateVeiculo = async (veiculo: CreateVeiculoRes, id: number) => {
-  try {
-    const { data, status } = await axios.put<CreateVeiculoRes>(
-      `${URL}/${id}`,
-      { veiculo },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+export const updateVeiculo = async (veiculo: UpdateVeiculoRes, id: number) => {
+  const { data, status } = await axios.put<UpdateVeiculoRes>(
+    `${URL}/${id}`,
+    { 
+      id: id,
+      marcaModelo: veiculo.marcaModelo,
+      anoFabricacao: veiculo.anoFabricacao,
+      kmAtual: veiculo.kmAtual
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    },
+  )
 
-    return data
-  } catch(error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
 export const deleteVeiculo = async (id: number) => {
@@ -84,6 +84,9 @@ export const deleteVeiculo = async (id: number) => {
     const { data, status } = await axios.delete(
       `${URL}/${id}`,
       {
+        data: {
+          id: id
+        },
         headers: {
           Accept: 'application/json',
         },
@@ -91,8 +94,18 @@ export const deleteVeiculo = async (id: number) => {
     )
 
     return data
-  } catch(error) {
+  } catch (error) {
     console.log('unexpected error: ', error)
     return 'An unexpected error ocurred'
   }
+}
+
+export const search = async (text: string) => {
+  let list: Veiculo[] = await getVeiculos() as unknown as Veiculo[]
+
+  let listRes = list.filter(function (value) {
+    return value.placa.toLowerCase().indexOf(text.toLowerCase()) > -1
+  })
+
+  return listRes
 }

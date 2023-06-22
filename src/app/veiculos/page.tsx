@@ -1,7 +1,11 @@
+import TableGlobal from "../Components/table";
+
+const tableHeads = ['Placa', 'Marca/Modelo', 'Ano de fabricacao', 'KM Atual']
+
 export default function Veiculos () {
   return (
     <div>
-      <h1>Veiculos</h1>
+      <TableGlobal tableHeads={tableHeads} type='veiculo' link="/veiculos"/>
     </div>
   )
 }

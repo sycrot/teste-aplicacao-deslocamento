@@ -147,7 +147,9 @@ function HandleTableBody(type: string, value: any) {
           <StyledTableCell component="th" scope="row">
             {value.kmInicial}
           </StyledTableCell>
+          <StyledTableCell align="left">{value.kmFinal}</StyledTableCell>
           <StyledTableCell align="left">{value.inicioDeslocamento}</StyledTableCell>
+          <StyledTableCell align="left">{value.fimDeslocamento}</StyledTableCell>
           <StyledTableCell align="left">{value.checkList}</StyledTableCell>
           <StyledTableCell align="left">{value.motivo}</StyledTableCell>
           <StyledTableCell align="left">{value.observacao}</StyledTableCell>
@@ -187,12 +189,7 @@ function handleLoading() {
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={2}>
-          <Skeleton variant="rounded" height={60} />
-          <Skeleton variant="rounded" height={60} />
-          <Skeleton variant="rounded" height={60} />
-          <Skeleton variant="rounded" height={60} />
-          <Skeleton variant="rounded" height={60} />
-          <Skeleton variant="rounded" height={60} />
+          <Skeleton variant="rounded" height={490} />
         </Stack>
       </Grid>
     </Grid>
@@ -409,10 +406,14 @@ export default function TableGlobal(props: Props) {
         })
         break;
       case 'condutor':
-        break;
-      case 'deslocamento':
+        await condutorService.search(textSearch).then(res => {
+          setCondutores(res as unknown as Condutor[])
+        })
         break;
       case 'veiculo':
+        await veiculoService.search(textSearch).then(res => {
+          setVeiculos(res as unknown as Veiculo[])
+        })
         break;
     }
   }
@@ -444,23 +445,31 @@ export default function TableGlobal(props: Props) {
         handleLoading()
         :
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+          {
+            props.type === 'cliente' ||
+            props.type === 'condutor' ||
+            props.type === 'veiculo' ?
+            <Grid item xs={9}>
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder={`${props.type === 'cliente' ? 'Digite o nome do cliente' : ''}${props.type === 'condutor' ? 'Digite o nome do condutor' : ''}${props.type === 'veiculo' ? 'Digite a placa do veículo' : ''}
+                  `}
+                  inputProps={{ 'aria-label': 'Pesquisar' }}
+                  onChange={handleOnChangeSearch}
+                />
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </Grid>
+            :
+            ''
+          }
 
-          <Grid item xs={9}>
-            <Paper
-              component="form"
-              sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
-            >
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder={`Pesquisar`}
-                inputProps={{ 'aria-label': 'Pesquisar' }}
-                onChange={handleOnChangeSearch}
-              />
-              <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
-                <SearchIcon />
-              </IconButton>
-            </Paper>
-          </Grid>
           <Grid item xs={3}>
             <Link href={`${props.link}/novo`}>
               <Button variant="contained" fullWidth sx={{ height: 50 }}>

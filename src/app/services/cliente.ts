@@ -38,60 +38,50 @@ export const getById = async (id: number) => {
 }
 
 export const postCliente = async (cliente: CreateClienteRes) => {
-  try {
-    const { data, status } = await axios.post<CreateClienteRes>(
-      `/api/v1/Cliente`,
-      {
-        numeroDocumento: cliente.numeroDocumento,
-        tipoDocumento: cliente.tipoDocumento,
-        nome: cliente.nome,
-        logradouro: cliente.logradouro,
-        numero: cliente.numero,
-        bairro: cliente.bairro,
-        cidade: cliente.cidade,
-        uf: cliente.uf,
+  const { data, status } = await axios.post<CreateClienteRes>(
+    `/api/v1/Cliente`,
+    {
+      numeroDocumento: cliente.numeroDocumento,
+      tipoDocumento: cliente.tipoDocumento,
+      nome: cliente.nome,
+      logradouro: cliente.logradouro,
+      numero: cliente.numero,
+      bairro: cliente.bairro,
+      cidade: cliente.cidade,
+      uf: cliente.uf,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      },
-    )
+    },
+  )
 
-    return data
-  } catch (error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
 export const updateCliente = async (cliente: UpdateClienteRes, id: number) => {
-  try {
-    const { data, status } = await axios.put<UpdateClienteRes>(
-      `/api/v1/Cliente/${id}`,
-      {
-        id: cliente.id,
-        nome: cliente.nome,
-        logradouro: cliente.logradouro,
-        numero: cliente.numero,
-        bairro: cliente.bairro,
-        cidade: cliente.cidade,
-        uf: cliente.uf,
+  const { data, status } = await axios.put<UpdateClienteRes>(
+    `/api/v1/Cliente/${id}`,
+    {
+      id: cliente.id,
+      nome: cliente.nome,
+      logradouro: cliente.logradouro,
+      numero: cliente.numero,
+      bairro: cliente.bairro,
+      cidade: cliente.cidade,
+      uf: cliente.uf,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      },
-    )
+    },
+  )
 
-    return data
-  } catch (error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
 export const deleteCliente = async (id: number) => {
@@ -118,9 +108,9 @@ export const deleteCliente = async (id: number) => {
 }
 
 export const search = async (text: string) => {
-  let list:Cliente[] = await getClientes() as unknown as Cliente[]
+  let list: Cliente[] = await getClientes() as unknown as Cliente[]
 
-  let listRes = list.filter(function(value) {
+  let listRes = list.filter(function (value) {
     return value.nome.toLowerCase().indexOf(text.toLowerCase()) > -1
   })
 

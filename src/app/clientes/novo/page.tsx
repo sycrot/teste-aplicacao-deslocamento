@@ -21,6 +21,8 @@ const schema = yup.object({
 
 export default function CreateCliente() {
   const [open, setOpen] = React.useState(false)
+  const [openError, setOpenError] = React.useState(false)
+  const [textError, setTextError] = React.useState('')
 
   const router = useRouter()
 
@@ -39,6 +41,9 @@ export default function CreateCliente() {
     onSubmit: async (values) => {
       await clienteService.postCliente(values).then(res => {
         setOpen(true)
+      }).catch(err => {
+        setOpenError(true)
+        setTextError(err.response.data)
       })
     },
   });
@@ -48,37 +53,25 @@ export default function CreateCliente() {
     router.push('/clientes')
   };
 
+  const handleCloseError = () => {
+    setOpenError(false)
+  }
+
   return (
     <>
-      <Dialog
+      <ClienteForm
+        handleSubmit={formik.handleSubmit}
+        handleChange={formik.handleChange}
+        selectChange={formik.handleChange}
+        touched={formik.touched}
+        errors={formik.errors}
+        values={formik.values}
+        handleClose={handleClose}
+        page="create"
         open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <Alert severity="success">Cliente criado com sucesso!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={handleClose} autoFocus color="success">OK</IconButton></Alert>
-      </Dialog>
-
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/clientes">
-              Clientes
-            </Link>
-            <Typography color="text.primary">Novo cliente</Typography>
-          </Breadcrumbs>
-          <Typography variant="h4" color="text.primary">Novo cliente</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <ClienteForm
-            handleSubmit={formik.handleSubmit}
-            handleChange={formik.handleChange}
-            selectChange={formik.handleChange}
-            touched={formik.touched}
-            errors={formik.errors}
-            values={formik.values} />
-        </Grid>
-      </Grid>
+        handleCloseError={handleCloseError}
+        openError={openError}
+        textError={textError} />
 
     </>
   )

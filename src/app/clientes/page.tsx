@@ -5,7 +5,7 @@ import { Button, Grid, IconButton, InputBase, Paper, TextField } from "@mui/mate
 import TableGlobal from "../Components/table";
 import SearchIcon from '@mui/icons-material/Search';
 
-const tableHeads = ['Nome', 'Numero do Documento', 'Tipo do Documento', 'Logradouro', 'Numero', 'Bairro', 'Cidade', 'Estado']
+const tableHeads = ['Nome', 'Número do Documento', 'Tipo do Documento', 'Logradouro', 'Número', 'Bairro', 'Cidade', 'Estado']
 
 export default function Clientes() {
   return (

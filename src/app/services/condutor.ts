@@ -1,6 +1,7 @@
 import { Cliente, CreateClienteRes } from "@/app/types/cliente";
 import axios from './axios-config'
-import { Condutor, CreateCondutorRes } from "@/app/types/condutor";
+import { Condutor, CreateCondutorRes, UpdateCondutorRes } from "@/app/types/condutor";
+import moment from "moment";
 
 const URL = '/api/v1/Condutor'
 
@@ -41,48 +42,43 @@ export const getById = async (id: number) => {
 }
 
 export const postCondutor = async (condutor: CreateCondutorRes) => {
-  try {
-    const { data, status } = await axios.post<CreateCondutorRes>(
-      `${URL}`,
-      { 
-        nome: condutor.nome,
-        numeroHabilitacao: condutor.numeroHabilitacao,
-        catergoriaHabilitacao: condutor.catergoriaHabilitacao,
-        vencimentoHabilitacao: condutor.vencimentoHabilitacao,
+  const { data, status } = await axios.post<CreateCondutorRes>(
+    `${URL}`,
+    {
+      nome: condutor.nome,
+      numeroHabilitacao: condutor.numeroHabilitacao,
+      categoriaHabilitacao: condutor.categoriaHabilitacao,
+      vencimentoHabilitacao: condutor.vencimentoHabilitacao
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      },
-    )
+    },
+  )
 
-    return data
-  } catch(error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
-export const updateCondutor = async (condutor: CreateCondutorRes, id: number) => {
-  try {
-    const { data, status } = await axios.put<CreateCondutorRes>(
-      `${URL}/${id}`,
-      { condutor },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      },
-    )
+export const updateCondutor = async (condutor: UpdateCondutorRes, id: number) => {
 
-    return data
-  } catch(error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  const { data, status } = await axios.put<UpdateCondutorRes>(
+    `${URL}/${id}`,
+    {
+      id: id,
+      vencimentoHabilitacao: condutor.vencimentoHabilitacao
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    },
+  )
+
+  return data
+
 }
 
 export const deleteCondutor = async (id: number) => {
@@ -100,8 +96,18 @@ export const deleteCondutor = async (id: number) => {
     )
 
     return data
-  } catch(error) {
+  } catch (error) {
     console.log('unexpected error: ', error)
     return 'An unexpected error ocurred'
   }
+}
+
+export const search = async (text: string) => {
+  let list: Condutor[] = await getCondutores() as unknown as Condutor[]
+
+  let listRes = list.filter(function (value) {
+    return value.nome.toLowerCase().indexOf(text.toLowerCase()) > -1
+  })
+
+  return listRes
 }

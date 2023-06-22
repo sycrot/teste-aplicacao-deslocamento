@@ -12,3 +12,10 @@ export type CreateVeiculoRes = {
   anoFabricacao: number,
   kmAtual: number
 }
+
+export type UpdateVeiculoRes = {
+  id: number;
+  marcaModelo: string,
+  anoFabricacao: number,
+  kmAtual: number
+}

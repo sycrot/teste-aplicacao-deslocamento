@@ -1,19 +1,19 @@
 "use client"
 import React from "react";
-import { CondutorForm } from "@/app/Components/formFields";
-import * as yup from "yup"
-import * as condutorService from "../../services/condutor"
-import { useFormik } from 'formik'
+import { VeiculoForm } from "@/app/Components/formFields";
 import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import * as veiculoService from '../../services/veiculo'
+import * as yup from 'yup'
 
 const schema = yup.object({
-  nome: yup.string().required(`This field is required`),
-  numeroHabilitacao: yup.string().required(`This field is required`),
-  categoriaHabilitacao: yup.string().required(`This field is required`),
-  vencimentoHabilitacao: yup.string().required(`This field is required`)
+  placa: yup.string().required(`This field is required`),
+  marcaModelo: yup.string().required(`This field is required`),
+  anoFabricacao: yup.number().required(`This field is required`),
+  kmAtual: yup.number().required(`This field is required`)
 }).required()
 
-export default function CreateCondutor() {
+export default function CreateVeiculo() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
   const [textError, setTextError] = React.useState('')
@@ -21,25 +21,25 @@ export default function CreateCondutor() {
 
   const formik = useFormik({
     initialValues: {
-      nome: '',
-      numeroHabilitacao: '',
-      categoriaHabilitacao: '',
-      vencimentoHabilitacao: ''
+      placa: '',
+      marcaModelo: '',
+      anoFabricacao: 0,
+      kmAtual: 0
     },
     validationSchema: schema,
     onSubmit: async (values) => {
-      await condutorService.postCondutor(values).then(res => {
+      await veiculoService.postVeiculo(values).then(res => {
         setOpen(true)
       }).catch(err => {
         setOpenError(true)
         setTextError(err.response.data)
-      })
+      }) 
     },
   });
 
   const handleClose = () => {
     setOpen(false);
-    router.push('/condutores')
+    router.push('/veiculos')
   };
 
   const handleCloseError = () => {
@@ -48,7 +48,7 @@ export default function CreateCondutor() {
 
   return (
     <>
-      <CondutorForm
+      <VeiculoForm
         handleSubmit={formik.handleSubmit}
         handleChange={formik.handleChange}
         touched={formik.touched}

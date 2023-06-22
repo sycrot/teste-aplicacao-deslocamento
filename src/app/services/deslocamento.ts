@@ -1,7 +1,8 @@
 import { Cliente, CreateClienteRes } from "@/app/types/cliente";
 import axios from './axios-config'
 import { Condutor, CreateCondutorRes } from "@/app/types/condutor";
-import { CreateDeslocamentoRes, Deslocamento } from "@/app/types/deslocamento";
+import { CreateDeslocamentoRes, Deslocamento, UpdateDeslocamento } from "@/app/types/deslocamento";
+import moment from "moment";
 
 const URL = '/api/v1/Deslocamento'
 
@@ -42,43 +43,49 @@ export const getById = async (id: number) => {
 }
 
 export const postDeslocamento = async (deslocamento: CreateDeslocamentoRes) => {
-  try {
-    const { data, status } = await axios.post<CreateDeslocamentoRes>(
-      `${URL}`,
-      { deslocamento },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+  const date = moment()
+  const { data, status } = await axios.post<CreateDeslocamentoRes>(
+    `${URL}/IniciarDeslocamento`,
+    {
+      kmInicial: deslocamento.kmInicial,
+      inicioDeslocamento: date,
+      checkList: deslocamento.checkList,
+      motivo: deslocamento.motivo,
+      observacao: deslocamento.observacao,
+      idCondutor: deslocamento.idCondutor,
+      idVeiculo: deslocamento.idVeiculo,
+      idCliente: deslocamento.idCliente
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    },
+  )
 
-    return data
-  } catch(error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
-export const updateDeslocamento = async (deslocamento: CreateDeslocamentoRes, id: number) => {
-  try {
-    const { data, status } = await axios.put<CreateDeslocamentoRes>(
-      `${URL}/${id}`,
-      { deslocamento },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+export const updateDeslocamento = async (deslocamento: UpdateDeslocamento, id: number) => {
+  const date = moment()
+  const { data, status } = await axios.put<UpdateDeslocamento>(
+    `${URL}/${id}/EncerrarDeslocamento`,
+    {
+      id: id,
+      kmFinal: deslocamento.kmFinal,
+      fimDeslocamento: date,
+      observacao: deslocamento.observacao
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    )
+    },
+  )
 
-    return data
-  } catch(error) {
-    console.log('unexpected error: ', error)
-    return 'An unexpected error ocurred'
-  }
+  return data
 }
 
 export const deleteDeslocamento = async (id: number) => {
@@ -93,7 +100,7 @@ export const deleteDeslocamento = async (id: number) => {
     )
 
     return data
-  } catch(error) {
+  } catch (error) {
     console.log('unexpected error: ', error)
     return 'An unexpected error ocurred'
   }
