@@ -1,7 +1,7 @@
 export type Deslocamento = {
   id: number
   kmInicial: number
-  inicioDeslocamento: Date
+  inicioDeslocamento: string
   checkList: string
   motivo: string
   observacao: string

@@ -10,32 +10,40 @@ import { Deslocamento, UpdateDeslocamentoRes } from "@/app/types/deslocamento";
 
 const schema = yup.object({
   kmFinal: yup.number().required(`This field is required`),
-  fimDeslocamento: yup.string(),
+  fimDeslocamento: yup.string().required(`Digite uma data e hora`),
   observacao: yup.string(),
 })
 
 export default function UpdateDeslocamento() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
   const [textError, setTextError] = React.useState('')
   const router = useRouter()
   const routerParams = useParams()
-  const date = moment().format()
+  const date = moment().format('yyyy-MM-DDThh:mm')
 
-  const [deslocamento, setDeslocamento] = React.useState<UpdateDeslocamentoRes>({
+  const [deslocamento, setDeslocamento] = React.useState<Deslocamento>({
     id: +routerParams.id,
+    kmInicial: 0,
+    inicioDeslocamento: '',
+    checkList: '',
+    motivo: '',
+    observacao: '',
+    idCondutor: 0,
+    idVeiculo: 0,
+    idCliente: 0,
     kmFinal: 0,
     fimDeslocamento: '',
-    observacao: '',
   })
 
   React.useEffect(() => {
-    const getCliente = async () => {
+    const getDeslocamento = async () => {
       await deslocamentoService.getById(+routerParams.id).then((value) => {
-        setDeslocamento(value as UpdateDeslocamentoRes)
+        setDeslocamento(value as Deslocamento)
       })
     }
-    getCliente()
+    getDeslocamento()
   }, [routerParams.id])
 
   const formik = useFormik({
@@ -47,6 +55,7 @@ export default function UpdateDeslocamento() {
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      setButtonDisable(true)
       await deslocamentoService.updateDeslocamento(values, +routerParams.id).then(res => {
         setOpen(true)
       }).catch(err => {
@@ -63,6 +72,7 @@ export default function UpdateDeslocamento() {
 
   const handleCloseError = () => {
     setOpenError(false)
+    setButtonDisable(false)
   }
 
   return (
@@ -80,6 +90,7 @@ export default function UpdateDeslocamento() {
         open={open}
         openError={openError}
         textError={textError}
+        buttonDisable={buttonDisable}
       />
     </>
   )

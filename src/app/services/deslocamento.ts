@@ -1,7 +1,7 @@
 import { Cliente, CreateClienteRes } from "@/app/types/cliente";
 import axios from './axios-config'
 import { Condutor, CreateCondutorRes } from "@/app/types/condutor";
-import { CreateDeslocamentoRes, Deslocamento, UpdateDeslocamento } from "@/app/types/deslocamento";
+import { CreateDeslocamentoRes, Deslocamento, UpdateDeslocamentoRes } from "@/app/types/deslocamento";
 import moment from "moment";
 
 const URL = '/api/v1/Deslocamento'
@@ -43,12 +43,11 @@ export const getById = async (id: number) => {
 }
 
 export const postDeslocamento = async (deslocamento: CreateDeslocamentoRes) => {
-  const date = moment()
   const { data, status } = await axios.post<CreateDeslocamentoRes>(
     `${URL}/IniciarDeslocamento`,
     {
       kmInicial: deslocamento.kmInicial,
-      inicioDeslocamento: date,
+      inicioDeslocamento: deslocamento.inicioDeslocamento,
       checkList: deslocamento.checkList,
       motivo: deslocamento.motivo,
       observacao: deslocamento.observacao,
@@ -67,14 +66,14 @@ export const postDeslocamento = async (deslocamento: CreateDeslocamentoRes) => {
   return data
 }
 
-export const updateDeslocamento = async (deslocamento: UpdateDeslocamento, id: number) => {
+export const updateDeslocamento = async (deslocamento: UpdateDeslocamentoRes, id: number) => {
   const date = moment()
-  const { data, status } = await axios.put<UpdateDeslocamento>(
+  const { data, status } = await axios.put<UpdateDeslocamentoRes>(
     `${URL}/${id}/EncerrarDeslocamento`,
     {
       id: id,
       kmFinal: deslocamento.kmFinal,
-      fimDeslocamento: date,
+      fimDeslocamento: deslocamento.fimDeslocamento,
       observacao: deslocamento.observacao
     },
     {
@@ -93,6 +92,9 @@ export const deleteDeslocamento = async (id: number) => {
     const { data, status } = await axios.delete(
       `${URL}/${id}`,
       {
+        data: {
+          id: id
+        },
         headers: {
           Accept: 'application/json',
         },

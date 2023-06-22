@@ -18,6 +18,7 @@ const schema = yup.object().shape({
 export default function AtualizarCondutor() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
   const [textError, setTextError] = React.useState('')
   const routerParams = useParams()
   const router = useRouter()
@@ -50,6 +51,7 @@ export default function AtualizarCondutor() {
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      setButtonDisable(true)
       await condutorService.updateCondutor(values, +routerParams.id).then(res => {
         setOpen(true)
       }).catch(err => {
@@ -66,6 +68,7 @@ export default function AtualizarCondutor() {
 
   const handleCloseError = () => {
     setOpenError(false)
+    setButtonDisable(false)
   }
 
   return (
@@ -82,6 +85,7 @@ export default function AtualizarCondutor() {
         handleCloseError={handleCloseError}
         openError={openError}
         textError={textError}
+        buttonDisable={buttonDisable}
       />
     </>
   )

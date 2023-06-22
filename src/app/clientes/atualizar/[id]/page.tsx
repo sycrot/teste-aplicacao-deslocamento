@@ -22,6 +22,7 @@ const schema = yup.object().shape({
 export default function AtualizarCliente() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
   const [textError, setTextError] = React.useState('')
   const routerParams = useParams()
   const router = useRouter()
@@ -62,6 +63,7 @@ export default function AtualizarCliente() {
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      setButtonDisable(true)
       await clienteService.updateCliente(values, +routerParams.id).then(res => {
         setOpen(true)
       }).catch(err => {
@@ -78,6 +80,7 @@ export default function AtualizarCliente() {
 
   const handleCloseError = () => {
     setOpenError(false)
+    setButtonDisable(false)
   }
 
   return (
@@ -94,7 +97,8 @@ export default function AtualizarCliente() {
         open={open}
         handleCloseError={handleCloseError}
         openError={openError}
-        textError={textError} />
+        textError={textError}
+        buttonDisable={buttonDisable} />
     </>
   )
 }

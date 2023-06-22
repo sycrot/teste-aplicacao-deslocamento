@@ -20,7 +20,8 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems } from './Components/listItems';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import ListItemsNav from './Components/listItems';
 
 function Copyright(props: any) {
   return (
@@ -102,10 +103,28 @@ export default function RootLayout({
 }) {
   const [open, setOpen] = React.useState(true);
   const [pageTitle, setPageTitle] = React.useState('Dashboard')
+  const router = usePathname()
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  React.useEffect(() => {
+    const getTitle = () => {
+      if (router === '/') {
+        setPageTitle('Dashboard')
+      } else if (router === '/clientes') {
+        setPageTitle('Clientes')
+      } else if (router === '/condutores') {
+        setPageTitle('Condutores')
+      } else if (router === '/veiculos') {
+        setPageTitle('Veículos')
+      } else if (router === '/deslocamentos') {
+        setPageTitle('Deslocamentos')
+      }
+    }
+    getTitle()
+  }, [router])
 
   return (
     <html lang="pt">
@@ -162,8 +181,7 @@ export default function RootLayout({
               </Toolbar>
               <Divider />
               <List component="nav">
-                {mainListItems}
-                {/* <Divider sx={{ my: 1 }} /> */}
+                <ListItemsNav />
               </List>
             </Drawer>
             <Box
@@ -179,9 +197,8 @@ export default function RootLayout({
               }}
             >
               <Toolbar />
-              <Container sx={{ mt: 4, mb: 4 }}>
+              <Container maxWidth={false} sx={{ maxWidth: '1420px',mt: 4, mb: 4 }}>
                 <Grid>
-                  {/* Chart */}
                   <Grid item xs={12} md={12} lg={9}>
                     <Paper
                       sx={{
@@ -193,7 +210,6 @@ export default function RootLayout({
                       {children}
                     </Paper>
                   </Grid>
-                  {/* Recent Deposits */}
 
                 </Grid>
                 <Copyright sx={{ pt: 4 }} />

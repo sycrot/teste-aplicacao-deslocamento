@@ -17,6 +17,7 @@ const schema = yup.object({
 export default function UpdateVeiculo() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
   const [textError, setTextError] = React.useState('')
   const router = useRouter()
   const routerParams = useParams()
@@ -49,6 +50,7 @@ export default function UpdateVeiculo() {
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      setButtonDisable(true)
       await veiculoService.updateVeiculo(values, +routerParams.id).then(res => {
         setOpen(true)
       }).catch(err => {
@@ -65,6 +67,7 @@ export default function UpdateVeiculo() {
 
   const handleCloseError = () => {
     setOpenError(false)
+    setButtonDisable(false)
   }
 
   return (
@@ -81,6 +84,7 @@ export default function UpdateVeiculo() {
         open={open}
         openError={openError}
         textError={textError}
+        buttonDisable={buttonDisable}
       />
     </>
   )

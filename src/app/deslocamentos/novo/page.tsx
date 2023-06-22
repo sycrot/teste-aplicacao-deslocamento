@@ -9,22 +9,23 @@ import moment from "moment";
 
 const schema = yup.object({
   kmInicial: yup.number().required(`This field is required`),
-  inicioDeslocamento: yup.string(),
-  checkList: yup.string().required(`This field is required`),
+  inicioDeslocamento: yup.string().required(`Digite uma data e hora`),
+  checkList: yup.string(),
   motivo: yup.string().required(`This field is required`),
-  observacao: yup.string().required(`This field is required`),
-  idCondutor: yup.number().required(`This field is required`),
-  idVeiculo: yup.number().required(`This field is required`),
-  idCliente: yup.number().required(`This field is required`),
+  observacao: yup.string(),
+  idCondutor: yup.number().required('Escolha um condutor').min(0, 'Escolha um condutor'),
+  idVeiculo: yup.number().required(`Escolha um veículo`).min(0, 'Escolha um veículo'),
+  idCliente: yup.number().required(`Escolha um cliente`).min(0, 'Escolha um cliente'),
 })
 
 export default function CreatDeslocamento() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
   const [textError, setTextError] = React.useState('')
   const router = useRouter()
 
-  const date = moment().format()
+  const date = moment().format('yyyy-MM-DDThh:mm')
 
   const formik = useFormik({
     initialValues: {
@@ -33,12 +34,13 @@ export default function CreatDeslocamento() {
       checkList: '',
       motivo: '',
       observacao: '',
-      idCondutor: 0,
-      idVeiculo: 0,
-      idCliente: 0,
+      idCondutor: -1,
+      idVeiculo: -1,
+      idCliente: -1,
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      setButtonDisable(true)
       await deslocamentoService.postDeslocamento(values).then(res => {
         setOpen(true)
       }).catch(err => {
@@ -55,6 +57,7 @@ export default function CreatDeslocamento() {
 
   const handleCloseError = () => {
     setOpenError(false)
+    setButtonDisable(false)
   }
 
   return (
@@ -72,6 +75,7 @@ export default function CreatDeslocamento() {
         open={open}
         openError={openError}
         textError={textError}
+        buttonDisable={buttonDisable}
       />
     </>
   )

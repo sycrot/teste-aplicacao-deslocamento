@@ -1,5 +1,5 @@
 "use client"
-import { Alert, Breadcrumbs, Button, Dialog, FormControl, FormHelperText, Grid, IconButton, InputLabel, Link, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Alert, Breadcrumbs, Button, Dialog, FormControl, FormHelperText, Grid, IconButton, InputLabel, Link, MenuItem, Select, SelectChangeEvent, Snackbar, SnackbarOrigin, TextField, Typography } from "@mui/material";
 import { FormikErrors, FormikTouched } from "formik";
 import React, { FormEvent, ReactNode } from "react";
 import { Cliente, CreateClienteRes, UpdateClienteRes } from "../types/cliente";
@@ -51,6 +51,7 @@ interface IProps {
   values: any
   page: string
   textError: string
+  buttonDisable?: boolean
 }
 
 interface IPropsCliente {
@@ -91,18 +92,38 @@ type TPropsDeslocamento = IPropsDeslocamento & IProps
 
 type TPropsPutDeslocamento = IPropsPutDeslocamento & IProps
 
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 export function ClienteForm(props: TPropsCliente) {
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
+
   return (
     <>
-      <Dialog
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={props.open}
+        onClose={props.handleClose}
+        key={vertical + horizontal}
+        autoHideDuration={2000}
+        sx={{ marginTop: 6 }}
+      >
+        <Alert severity="success">Cliente {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!</Alert>
+      </Snackbar>
+      {/* <Dialog
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <Alert severity="success">Cliente {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={props.handleClose} autoFocus color="success">OK</IconButton></Alert>
-      </Dialog>
+      </Dialog> */}
       <Dialog
         open={props.openError}
         onClose={props.handleCloseError}
@@ -202,6 +223,7 @@ export function ClienteForm(props: TPropsCliente) {
                   color='primary'
                   label="Bairro"
                   name="bairro"
+                  fullWidth
                   error={props.touched?.bairro && props.errors?.bairro !== undefined}
                   value={props.values?.bairro}
                   onChange={props.handleChange}
@@ -213,6 +235,7 @@ export function ClienteForm(props: TPropsCliente) {
                   color='primary'
                   label="Cidade"
                   name="cidade"
+                  fullWidth
                   error={props.touched?.cidade && props.errors?.cidade !== undefined}
                   value={props.values?.cidade}
                   onChange={props.handleChange}
@@ -241,7 +264,7 @@ export function ClienteForm(props: TPropsCliente) {
                   <Link href="/clientes">
                     <Button type="button" variant="outlined" color="primary">voltar</Button>
                   </Link>
-                  <Button type="submit" variant="contained" color="success">enviar</Button>
+                  <Button disabled={props.buttonDisable} type="submit" variant="contained" color="success">enviar</Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -254,16 +277,33 @@ export function ClienteForm(props: TPropsCliente) {
 }
 
 export function CondutorForm(props: TPropsCondutor) {
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
+
   return (
     <>
-      <Dialog
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={props.open}
+        onClose={props.handleClose}
+        key={vertical + horizontal}
+        autoHideDuration={2000}
+        sx={{ marginTop: 6 }}
+      >
+        <Alert severity="success">Condutor {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!</Alert>
+      </Snackbar>
+      {/* <Dialog
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <Alert severity="success">Condutor {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={props.handleClose} autoFocus color="success">OK</IconButton></Alert>
-      </Dialog>
+      </Dialog> */}
       <Dialog
         open={props.openError}
         onClose={props.handleCloseError}
@@ -355,7 +395,7 @@ export function CondutorForm(props: TPropsCondutor) {
                   <Link href="/condutores">
                     <Button type="button" variant="outlined" color="primary">voltar</Button>
                   </Link>
-                  <Button type="submit" variant="contained" color="success">enviar</Button>
+                  <Button disabled={props.buttonDisable} type="submit" variant="contained" color="success">enviar</Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -367,16 +407,33 @@ export function CondutorForm(props: TPropsCondutor) {
 }
 
 export function VeiculoForm(props: TPropsVeiculo) {
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
+
   return (
     <>
-      <Dialog
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={props.open}
+        onClose={props.handleClose}
+        key={vertical + horizontal}
+        autoHideDuration={2000}
+        sx={{ marginTop: 6 }}
+      >
+        <Alert severity="success">Veículo {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!</Alert>
+      </Snackbar>
+      {/* <Dialog
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <Alert severity="success">Veículo {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={props.handleClose} autoFocus color="success">OK</IconButton></Alert>
-      </Dialog>
+      </Dialog>*/}
       <Dialog
         open={props.openError}
         onClose={props.handleCloseError}
@@ -465,7 +522,7 @@ export function VeiculoForm(props: TPropsVeiculo) {
                   <Link href="/veiculos">
                     <Button type="button" variant="outlined" color="primary">voltar</Button>
                   </Link>
-                  <Button type="submit" variant="contained" color="success">enviar</Button>
+                  <Button disabled={props.buttonDisable} type="submit" variant="contained" color="success">enviar</Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -480,8 +537,13 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
   const [condutores, setCondutores] = React.useState<Condutor[]>()
   const [veiculos, setVeiculos] = React.useState<Veiculo[]>()
   const [clientes, setClientes] = React.useState<Cliente[]>()
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
 
-  const date = moment().format('yyyy-MM-DD')
   const getCondutores = React.useCallback(async () => {
     await condutorService.getCondutores().then(res => {
       setCondutores(res as unknown as Condutor[])
@@ -508,14 +570,24 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
 
   return (
     <>
-      <Dialog
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={props.open}
+        onClose={props.handleClose}
+        key={vertical + horizontal}
+        autoHideDuration={2000}
+        sx={{ marginTop: 6 }}
+      >
+        <Alert severity="success">Deslocamento {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!</Alert>
+      </Snackbar>
+      {/* <Dialog
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <Alert severity="success">Veículo {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={props.handleClose} autoFocus color="success">OK</IconButton></Alert>
-      </Dialog>
+      </Dialog> */}
       <Dialog
         open={props.openError}
         onClose={props.handleCloseError}
@@ -537,17 +609,17 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/veiculos">
-              Veículos
+            <Link underline="hover" color="inherit" href="/deslocamentos">
+              Deslocamentos
             </Link>
-            <Typography color="text.primary">{props.page === 'create' ? 'Novo' : 'Atualizar'} veículo</Typography>
+            <Typography color="text.primary">{props.page === 'create' ? 'Novo' : 'Atualizar'} deslocamento</Typography>
           </Breadcrumbs>
-          <Typography variant="h4" color="text.primary">{props.page === 'create' ? 'Novo' : 'Atualizar'} veículo</Typography>
+          <Typography variant="h4" color="text.primary">{props.page === 'create' ? 'Novo' : 'Atualizar'} deslocamento</Typography>
         </Grid>
         <Grid item xs={12}>
           <form onSubmit={props.handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={4}>
                 <TextField type="number"
                   variant='outlined'
                   color='primary'
@@ -561,14 +633,14 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
                   helperText={(props.touched?.kmInicial && props.errors?.kmInicial) !== undefined && props.errors?.kmInicial} />
               </Grid>
               <Grid item xs={12} md={4}>
-                <TextField type="date"
+                <TextField type="datetime-local"
                   variant='outlined'
                   color='primary'
-                  label="Marca/Modelo"
+                  label="Início deslocamento"
                   fullWidth
                   name="inicioDeslocamento"
                   error={props.touched?.inicioDeslocamento && props.errors?.inicioDeslocamento !== undefined}
-                  value={date}
+                  value={props.values?.inicioDeslocamento}
                   onChange={props.handleChange}
                   InputLabelProps={{
                     shrink: true
@@ -600,7 +672,7 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
                   onChange={props.handleChange}
                   helperText={(props.touched?.motivo && props.errors?.motivo) !== undefined && props.errors?.motivo} />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={8}>
                 <TextField type="text"
                   variant='outlined'
                   color='primary'
@@ -671,7 +743,7 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
                   <Link href="/deslocamentos">
                     <Button type="button" variant="outlined" color="primary">voltar</Button>
                   </Link>
-                  <Button type="submit" variant="contained" color="success">enviar</Button>
+                  <Button disabled={props.buttonDisable} type="submit" variant="contained" color="success">enviar</Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -683,18 +755,33 @@ export function DeslocamentoForm(props: TPropsDeslocamento) {
 }
 
 export function PutDeslocamentoForm(props: TPropsPutDeslocamento) {
-  const date = moment().format('yyyy-MM-DD')
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
 
   return (
     <>
-      <Dialog
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={props.open}
+        onClose={props.handleClose}
+        key={vertical + horizontal}
+        autoHideDuration={2000}
+        sx={{ marginTop: 6 }}
+      >
+        <Alert severity="success">Deslocamento encerrado!</Alert>
+      </Snackbar>
+      {/* <Dialog
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Alert severity="success">Veículo {props.page === 'create' ? 'criado' : 'atualizado'} com sucesso!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={props.handleClose} autoFocus color="success">OK</IconButton></Alert>
-      </Dialog>
+        <Alert severity="success">Deslocamento {props.page === 'create' ? 'criado' : 'atualizado'}!<IconButton sx={{ marginLeft: 2 }} size="small" onClick={props.handleClose} autoFocus color="success">OK</IconButton></Alert>
+      </Dialog> */}
       <Dialog
         open={props.openError}
         onClose={props.handleCloseError}
@@ -716,17 +803,17 @@ export function PutDeslocamentoForm(props: TPropsPutDeslocamento) {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/veiculos">
-              Veículos
+            <Link underline="hover" color="inherit" href="/deslocamentos">
+              Deslocamentos
             </Link>
-            <Typography color="text.primary">{props.page === 'create' ? 'Novo' : 'Atualizar'} veículo</Typography>
+            <Typography color="text.primary">Encerrar deslocamento</Typography>
           </Breadcrumbs>
-          <Typography variant="h4" color="text.primary">{props.page === 'create' ? 'Novo' : 'Atualizar'} veículo</Typography>
+          <Typography variant="h4" color="text.primary">Encerrar deslocamento</Typography>
         </Grid>
         <Grid item xs={12}>
           <form onSubmit={props.handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
                 <TextField type="number"
                   variant='outlined'
                   color='primary'
@@ -738,21 +825,21 @@ export function PutDeslocamentoForm(props: TPropsPutDeslocamento) {
                   onChange={props.handleChange}
                   helperText={(props.touched?.kmFinal && props.errors?.kmFinal) !== undefined && props.errors?.kmFinal} />
               </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField type="date"
+              <Grid item xs={12} md={6}>
+                <TextField type="datetime-local"
                   variant='outlined'
                   color='primary'
-                  label="Marca/Modelo"
+                  label="Fim deslocamento"
                   fullWidth
                   name="fimDeslocamento"
                   error={props.touched?.fimDeslocamento && props.errors?.fimDeslocamento !== undefined}
-                  value={date}
+                  value={props.values?.fimDeslocamento}
                   onChange={props.handleChange}
                   InputLabelProps={{
                     shrink: true
                   }} />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={12}>
                 <TextField
                   type="text"
                   variant='outlined'
@@ -771,7 +858,7 @@ export function PutDeslocamentoForm(props: TPropsPutDeslocamento) {
                   <Link href="/deslocamentos">
                     <Button type="button" variant="outlined" color="primary">voltar</Button>
                   </Link>
-                  <Button type="submit" variant="contained" color="success">enviar</Button>
+                  <Button disabled={props.buttonDisable} type="submit" variant="contained" color="warning">encerrar</Button>
                 </Grid>
               </Grid>
             </Grid>

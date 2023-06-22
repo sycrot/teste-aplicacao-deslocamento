@@ -22,6 +22,7 @@ const schema = yup.object({
 export default function CreateCliente() {
   const [open, setOpen] = React.useState(false)
   const [openError, setOpenError] = React.useState(false)
+  const [buttonDisable, setButtonDisable] = React.useState(false)
   const [textError, setTextError] = React.useState('')
 
   const router = useRouter()
@@ -39,6 +40,7 @@ export default function CreateCliente() {
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      setButtonDisable(true)
       await clienteService.postCliente(values).then(res => {
         setOpen(true)
       }).catch(err => {
@@ -55,6 +57,7 @@ export default function CreateCliente() {
 
   const handleCloseError = () => {
     setOpenError(false)
+    setButtonDisable(false)
   }
 
   return (
@@ -71,7 +74,8 @@ export default function CreateCliente() {
         open={open}
         handleCloseError={handleCloseError}
         openError={openError}
-        textError={textError} />
+        textError={textError}
+        buttonDisable={buttonDisable} />
 
     </>
   )

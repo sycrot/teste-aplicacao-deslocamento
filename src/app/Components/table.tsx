@@ -22,6 +22,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import ReplayIcon from '@mui/icons-material/Replay';
+import WrongLocationIcon from '@mui/icons-material/WrongLocation';
 import * as clienteService from '../services/cliente'
 import * as condutorService from '../services/condutor'
 import * as deslocamentoService from '../services/deslocamento'
@@ -447,30 +448,30 @@ export default function TableGlobal(props: Props) {
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           {
             props.type === 'cliente' ||
-            props.type === 'condutor' ||
-            props.type === 'veiculo' ?
-            <Grid item xs={9}>
-              <Paper
-                component="form"
-                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder={`${props.type === 'cliente' ? 'Digite o nome do cliente' : ''}${props.type === 'condutor' ? 'Digite o nome do condutor' : ''}${props.type === 'veiculo' ? 'Digite a placa do veículo' : ''}
+              props.type === 'condutor' ||
+              props.type === 'veiculo' ?
+              <Grid item xs={8}>
+                <Paper
+                  component="form"
+                  sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder={`${props.type === 'cliente' ? 'Digite o nome do cliente' : ''}${props.type === 'condutor' ? 'Digite o nome do condutor' : ''}${props.type === 'veiculo' ? 'Digite a placa do veículo' : ''}
                   `}
-                  inputProps={{ 'aria-label': 'Pesquisar' }}
-                  onChange={handleOnChangeSearch}
-                />
-                <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-            </Grid>
-            :
-            ''
+                    inputProps={{ 'aria-label': 'Pesquisar' }}
+                    onChange={handleOnChangeSearch}
+                  />
+                  <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+              </Grid>
+              :
+              ''
           }
 
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Link href={`${props.link}/novo`}>
               <Button variant="contained" fullWidth sx={{ height: 50 }}>
                 Novo {props.type === 'cliente' && 'cliente'}
@@ -497,10 +498,20 @@ export default function TableGlobal(props: Props) {
                     <StyledTableRow key={value.id}>
                       {HandleTableBody(props.type, value)}
 
-                      <StyledTableCell align="left" sx={{ display: 'flex' }}>
+                      <StyledTableCell align="center" sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Link href={
                           `${props.link}/atualizar/${value.id}`
-                        }><Fab color="primary" size="small"><EditIcon /></Fab></Link>
+                        }>
+                          {
+                            props.type === 'cliente' ||
+                            props.type === 'condutor' ||
+                            props.type === 'veiculo' ?
+                            <Fab color="primary" size="small"><EditIcon /></Fab>
+                            :
+                            <Fab color="warning" size="small"><WrongLocationIcon /></Fab>
+                          }
+
+                        </Link>
                         <Fab onClick={() => handleClickOpen(value.id)} color="error" size="small" sx={{ marginLeft: 1 }}><DeleteIcon /></Fab>
                       </StyledTableCell>
                     </StyledTableRow>
