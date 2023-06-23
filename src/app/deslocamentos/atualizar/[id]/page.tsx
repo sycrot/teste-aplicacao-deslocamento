@@ -46,7 +46,9 @@ export default function UpdateDeslocamento() {
     getDeslocamento()
   }, [routerParams.id])
 
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       id: +routerParams.id,
       kmFinal: 0,

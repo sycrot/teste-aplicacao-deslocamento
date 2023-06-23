@@ -54,6 +54,7 @@ export default function CreateCondutor() {
       <CondutorForm
         handleSubmit={formik.handleSubmit}
         handleChange={formik.handleChange}
+        selectChange={formik.handleChange}
         touched={formik.touched}
         errors={formik.errors}
         values={formik.values}

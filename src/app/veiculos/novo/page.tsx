@@ -24,7 +24,7 @@ export default function CreateVeiculo() {
     initialValues: {
       placa: '',
       marcaModelo: '',
-      anoFabricacao: 0,
+      anoFabricacao: 1800,
       kmAtual: 0
     },
     validationSchema: schema,

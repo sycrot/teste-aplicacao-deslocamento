@@ -32,13 +32,33 @@ export default function AtualizarCondutor() {
   })
 
   React.useEffect(() => {
-    const getCliente = async () => {
+    const getCondutor = async () => {
       await condutorService.getById(+routerParams.id).then((value) => {
         setCondutor(value as Condutor)
       })
     }
-    getCliente()
+    getCondutor()
   }, [routerParams.id])
+
+  const getDate = (date: string) => {
+    const newDate = new Date(date)
+
+    let day = newDate.getDate()
+    let month = newDate.getMonth()
+    let year = newDate.getFullYear()
+
+    let newDay = `${day}`
+    let newMonth = `${month}`
+
+    if (day < 10) {
+      newDay = `0${day}`
+    } 
+    if (month < 10) {
+      newMonth = `0${newMonth}`
+    }
+    return `${year}-${newMonth}-${newDay}`
+  }
+
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -47,7 +67,7 @@ export default function AtualizarCondutor() {
       nome: condutor.nome,
       numeroHabilitacao: condutor.numeroHabilitacao,
       categoriaHabilitacao: condutor.categoriaHabilitacao,
-      vencimentoHabilitacao: condutor.vencimentoHabilitacao
+      vencimentoHabilitacao: getDate(condutor.vencimentoHabilitacao)
     },
     validationSchema: schema,
     onSubmit: async (values) => {
@@ -76,6 +96,7 @@ export default function AtualizarCondutor() {
       <CondutorForm
         handleSubmit={formik.handleSubmit}
         handleChange={formik.handleChange}
+        selectChange={formik.handleChange}
         touched={formik.touched}
         errors={formik.errors}
         values={formik.values}

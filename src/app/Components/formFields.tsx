@@ -9,7 +9,7 @@ import { Deslocamento, UpdateDeslocamentoRes } from "../types/deslocamento";
 import * as condutorService from '../services/condutor'
 import * as clienteService from '../services/cliente'
 import * as veiculoService from '../services/veiculo'
-import moment from "moment";
+import moment, { min } from "moment";
 
 const states = [
   { nome: "Acre", "sigla": "AC" },
@@ -41,6 +41,14 @@ const states = [
   { nome: "Tocantins", "sigla": "TO" }
 ]
 
+const categoriasHabilitacao = [
+  { categoria: 'A' },
+  { categoria: 'B' },
+  { categoria: 'C' },
+  { categoria: 'D' },
+  { categoria: 'E' },
+]
+
 interface IProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void
   handleChange: (e: React.ChangeEvent<any>) => void;
@@ -63,6 +71,7 @@ interface IPropsCliente {
 interface IPropsCondutor {
   touched: FormikTouched<Condutor>
   errors: FormikErrors<Condutor>
+  selectChange?: (e: SelectChangeEvent<string>, child: ReactNode) => void;
 }
 
 interface IPropsVeiculo {
@@ -362,17 +371,22 @@ export function CondutorForm(props: TPropsCondutor) {
                   helperText={(props.touched?.numeroHabilitacao && props.errors?.numeroHabilitacao) !== undefined && props.errors?.numeroHabilitacao} />
               </Grid>
               <Grid item xs={12} md={4}>
-                <TextField type="text"
-                  variant='outlined'
-                  color='primary'
-                  label="Categoria da Habilitacao"
-                  fullWidth
-                  name="categoriaHabilitacao"
-                  error={props.touched?.categoriaHabilitacao && props.errors?.categoriaHabilitacao !== undefined}
-                  disabled={props.page === 'create' ? false : true}
-                  value={props.values?.catergoriaHabilitacao}
-                  onChange={props.handleChange}
-                  helperText={(props.touched?.categoriaHabilitacao && props.errors?.categoriaHabilitacao) !== undefined && props.errors?.categoriaHabilitacao} />
+                <FormControl fullWidth error={props.touched?.categoriaHabilitacao && props.errors?.categoriaHabilitacao !== undefined}>
+                  <InputLabel id="demo-simple-select-label">Categoria da Habilitacao</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Categoria da Habilitacao"
+                    name="categoriaHabilitacao"
+                    value={props.values?.categoriaHabilitacao}
+                    onChange={props.selectChange}
+                  >
+                    {categoriasHabilitacao.map((value, index) => (
+                      <MenuItem key={index} value={value.categoria}>{value.categoria}</MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{(props.touched?.categoriaHabilitacao && props.errors?.categoriaHabilitacao) !== undefined && props.errors?.categoriaHabilitacao}</FormHelperText>
+                </FormControl>
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
@@ -494,6 +508,9 @@ export function VeiculoForm(props: TPropsVeiculo) {
                 <TextField
                   type="number"
                   variant='outlined'
+                  InputProps={{
+                    inputProps: { min: 1800, max: 4000 }
+                  }}
                   color='primary'
                   label="Ano de fabricação"
                   fullWidth

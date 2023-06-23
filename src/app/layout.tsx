@@ -22,6 +22,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import ListItemsNav from './Components/listItems';
+import HomeIcon from '@mui/icons-material/Home';
 
 function Copyright(props: any) {
   return (
@@ -150,6 +151,11 @@ export default function RootLayout({
                 >
                   <MenuIcon />
                 </IconButton>
+                <Link href="/" sx={{marginRight: 1}}>
+                  <IconButton aria-label="dashboard" size="large">
+                    <HomeIcon sx={{color: 'white'}} />
+                  </IconButton>
+                </Link>
                 <Typography
                   component="h1"
                   variant="h6"

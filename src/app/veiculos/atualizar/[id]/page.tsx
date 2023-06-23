@@ -31,12 +31,12 @@ export default function UpdateVeiculo() {
   })
 
   React.useEffect(() => {
-    const getCliente = async () => {
+    const getVeiculo = async () => {
       await veiculoService.getById(+routerParams.id).then((value) => {
         setVeiculo(value as Veiculo)
       })
     }
-    getCliente()
+    getVeiculo()
   }, [routerParams.id])
 
   const formik = useFormik({

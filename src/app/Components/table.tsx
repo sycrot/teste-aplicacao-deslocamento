@@ -115,6 +115,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 }
 
 function HandleTableBody(type: string, value: any) {
+
   switch (type) {
     case 'cliente':
       return (
@@ -154,9 +155,6 @@ function HandleTableBody(type: string, value: any) {
           <StyledTableCell align="left">{value.checkList}</StyledTableCell>
           <StyledTableCell align="left">{value.motivo}</StyledTableCell>
           <StyledTableCell align="left">{value.observacao}</StyledTableCell>
-          <StyledTableCell align="left">{value.idCondutor}</StyledTableCell>
-          <StyledTableCell align="left">{value.idVeiculo}</StyledTableCell>
-          <StyledTableCell align="left">{value.idCliente}</StyledTableCell>
         </>
       )
     case 'veiculo':
@@ -190,7 +188,7 @@ function handleLoading() {
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={2}>
-          <Skeleton variant="rounded" height={490} />
+          <Skeleton variant="rounded" height={250} />
         </Stack>
       </Grid>
     </Grid>
@@ -243,6 +241,15 @@ export default function TableGlobal(props: Props) {
         await deslocamentoService.getDeslocamentos().then(res => {
           setLoading(false)
           setDeslocamentos(res as unknown as Deslocamento[])
+        })
+        await clienteService.getClientes().then(res => {
+          setClientes(res as unknown as Cliente[])
+        })
+        await condutorService.getCondutores().then(res => {
+          setCondutores(res as unknown as Condutor[])
+        })
+        await veiculoService.getVeiculos().then(res => {
+          setVeiculos(res as unknown as Veiculo[])
         })
         break;
     }
@@ -397,6 +404,10 @@ export default function TableGlobal(props: Props) {
 
   const handleOnChangeSearch = (e: any) => {
     setTextSearch(e.target.value)
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleSearch()
+    }
   }
 
   const handleSearch = async () => {
@@ -417,6 +428,38 @@ export default function TableGlobal(props: Props) {
         })
         break;
     }
+  }
+
+  const handleAllRowsDeslocamentos = (value: any) => {
+    let idCliente = value.idCliente
+    let idCondutor = value.idCondutor
+    let idVeiculo = value.idVeiculo
+
+    let cliente = clientes.filter(function (value) {
+      return value.id === idCliente
+    })
+
+    let condutor = condutores.filter(function (value) {
+      return value.id === idCondutor
+    })
+
+    let veiculo = veiculos.filter(function (value) {
+      return value.id === idVeiculo
+    })
+
+    return (
+      <>
+        <StyledTableCell align="left">{condutor.map((value) => (
+          `${value.id} - ${value.nome}`
+        ))}</StyledTableCell>
+        <StyledTableCell align="left">{veiculo.map((value) => (
+          `${value.id} - ${value.placa}`
+        ))}</StyledTableCell>
+        <StyledTableCell align="left">{cliente.map((value) => (
+          `${value.id} - ${value.nome}`
+        ))}</StyledTableCell>
+      </>
+    )
   }
 
   return (
@@ -450,7 +493,7 @@ export default function TableGlobal(props: Props) {
             props.type === 'cliente' ||
               props.type === 'condutor' ||
               props.type === 'veiculo' ?
-              <Grid item xs={8}>
+              <Grid item xs={12} md={9}>
                 <Paper
                   component="form"
                   sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
@@ -461,6 +504,7 @@ export default function TableGlobal(props: Props) {
                   `}
                     inputProps={{ 'aria-label': 'Pesquisar' }}
                     onChange={handleOnChangeSearch}
+                    onKeyDown={handleOnChangeSearch}
                   />
                   <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
                     <SearchIcon />
@@ -471,7 +515,7 @@ export default function TableGlobal(props: Props) {
               ''
           }
 
-          <Grid item xs={4}>
+          <Grid item xs={12} md={3} sx={{ marginLeft: 'auto' }}>
             <Link href={`${props.link}/novo`}>
               <Button variant="contained" fullWidth sx={{ height: 50 }}>
                 Novo {props.type === 'cliente' && 'cliente'}
@@ -497,22 +541,26 @@ export default function TableGlobal(props: Props) {
                   )?.map((value) => (
                     <StyledTableRow key={value.id}>
                       {HandleTableBody(props.type, value)}
+                      {props.type === 'deslocamento' && handleAllRowsDeslocamentos(value)}
 
-                      <StyledTableCell align="center" sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Link href={
-                          `${props.link}/atualizar/${value.id}`
-                        }>
-                          {
-                            props.type === 'cliente' ||
-                            props.type === 'condutor' ||
-                            props.type === 'veiculo' ?
-                            <Fab color="primary" size="small"><EditIcon /></Fab>
-                            :
-                            <Fab color="warning" size="small"><WrongLocationIcon /></Fab>
-                          }
+                      <StyledTableCell align="center" >
+                        <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                          <Link href={
+                            `${props.link}/atualizar/${value.id}`
+                          }>
+                            {
+                              props.type === 'cliente' ||
+                                props.type === 'condutor' ||
+                                props.type === 'veiculo' ?
+                                <Fab color="primary" size="small"><EditIcon /></Fab>
+                                :
+                                <Fab color="warning" size="small"><WrongLocationIcon /></Fab>
+                            }
 
-                        </Link>
-                        <Fab onClick={() => handleClickOpen(value.id)} color="error" size="small" sx={{ marginLeft: 1 }}><DeleteIcon /></Fab>
+                          </Link>
+                          <Fab onClick={() => handleClickOpen(value.id)} color="error" size="small" sx={{ marginLeft: 1 }}><DeleteIcon /></Fab>
+                        </Box>
+
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
