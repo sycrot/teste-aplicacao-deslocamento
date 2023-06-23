@@ -6,14 +6,14 @@ import PeopleIcon from '@mui/icons-material/People';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import { Cliente } from './types/cliente';
-import { Condutor } from './types/condutor';
-import { Deslocamento } from './types/deslocamento';
-import { Veiculo } from './types/veiculo';
-import * as clienteService from './services/cliente'
-import * as condutorService from './services/condutor'
-import * as veiculoService from './services/veiculo'
-import * as deslocamentoService from './services/deslocamento'
+import { Cliente } from '../types/cliente';
+import { Condutor } from '../types/condutor';
+import { Deslocamento } from '../types/deslocamento';
+import { Veiculo } from '../types/veiculo';
+import * as clienteService from '../services/cliente'
+import * as condutorService from '../services/condutor'
+import * as veiculoService from '../services/veiculo'
+import * as deslocamentoService from '../services/deslocamento'
 
 function handleLoading() {
   return (

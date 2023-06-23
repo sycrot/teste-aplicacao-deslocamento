@@ -1,5 +1,5 @@
 import axios from './axios-config'
-import { CreateVeiculoRes, UpdateVeiculoRes, Veiculo } from "@/app/types/veiculo";
+import { CreateVeiculoRes, UpdateVeiculoRes, Veiculo } from "@/types/veiculo";
 
 const URL = '/api/v1/Veiculo'
 

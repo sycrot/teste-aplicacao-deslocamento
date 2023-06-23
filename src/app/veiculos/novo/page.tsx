@@ -1,9 +1,9 @@
 "use client"
 import React from "react";
-import { VeiculoForm } from "@/app/Components/formFields";
+import { VeiculoForm } from "@/components/formFields";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import * as veiculoService from '../../services/veiculo'
+import * as veiculoService from '../../../services/veiculo'
 import * as yup from 'yup'
 
 const schema = yup.object({

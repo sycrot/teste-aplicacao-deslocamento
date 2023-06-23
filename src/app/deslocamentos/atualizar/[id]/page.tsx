@@ -1,12 +1,12 @@
 "use client"
-import { DeslocamentoForm, PutDeslocamentoForm } from "@/app/Components/formFields";
+import { DeslocamentoForm, PutDeslocamentoForm } from "@/components/formFields";
 import { useFormik } from "formik";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import * as yup from 'yup'
-import * as deslocamentoService from '../../../services/deslocamento'
+import * as deslocamentoService from '../../../../services/deslocamento'
 import moment from "moment";
-import { Deslocamento, UpdateDeslocamentoRes } from "@/app/types/deslocamento";
+import { Deslocamento, UpdateDeslocamentoRes } from "@/types/deslocamento";
 
 const schema = yup.object({
   kmFinal: yup.number().required(`This field is required`),

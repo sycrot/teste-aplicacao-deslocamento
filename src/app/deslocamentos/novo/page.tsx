@@ -1,10 +1,10 @@
 "use client"
-import { DeslocamentoForm } from "@/app/Components/formFields";
+import { DeslocamentoForm } from "@/components/formFields";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
 import * as yup from 'yup'
-import * as deslocamentoService from '../../services/deslocamento'
+import * as deslocamentoService from '../../../services/deslocamento'
 import moment from "moment";
 
 const schema = yup.object({

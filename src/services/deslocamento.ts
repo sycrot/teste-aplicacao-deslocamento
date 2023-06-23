@@ -1,7 +1,7 @@
-import { Cliente, CreateClienteRes } from "@/app/types/cliente";
+import { Cliente, CreateClienteRes } from "@/types/cliente";
 import axios from './axios-config'
-import { Condutor, CreateCondutorRes } from "@/app/types/condutor";
-import { CreateDeslocamentoRes, Deslocamento, UpdateDeslocamentoRes } from "@/app/types/deslocamento";
+import { Condutor, CreateCondutorRes } from "@/types/condutor";
+import { CreateDeslocamentoRes, Deslocamento, UpdateDeslocamentoRes } from "@/types/deslocamento";
 import moment from "moment";
 
 const URL = '/api/v1/Deslocamento'

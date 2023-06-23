@@ -1,11 +1,11 @@
 "use client"
 import React from "react";
-import { CondutorForm } from "@/app/Components/formFields";
+import { CondutorForm } from "@/components/formFields";
 import * as yup from "yup"
-import * as condutorService from "../../../services/condutor"
+import * as condutorService from "../../../../services/condutor"
 import { useFormik } from 'formik'
 import { useParams, useRouter } from "next/navigation";
-import { Condutor } from "@/app/types/condutor";
+import { Condutor } from "@/types/condutor";
 import { Alert, Dialog, Grid, IconButton, Typography } from "@mui/material";
 
 const schema = yup.object().shape({

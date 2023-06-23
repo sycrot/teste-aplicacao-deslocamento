@@ -1,9 +1,9 @@
 "use client"
 import React from "react";
 import * as yup from "yup"
-import * as clienteService from "../../services/cliente"
+import * as clienteService from "../../../services/cliente"
 import { useFormik } from 'formik'
-import { ClienteForm } from "@/app/Components/formFields";
+import { ClienteForm } from "@/components/formFields";
 import { Alert, Breadcrumbs, Dialog, Grid, IconButton, Link, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 

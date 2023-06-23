@@ -1,5 +1,5 @@
 "use client"
-import TableGlobal from "../Components/table"
+import TableGlobal from "../../components/table"
 
 const tableHeads = ['KM Inicial', 'KM Final', 'Início deslocamento', 'Fim deslocamento', 'CheckList', 'Motivo', 'Observação', 'Condutor', 'Veículo', 'Cliente']
 

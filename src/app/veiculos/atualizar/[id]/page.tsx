@@ -1,11 +1,11 @@
 "use client"
 import React from "react";
-import { VeiculoForm } from "@/app/Components/formFields";
+import { VeiculoForm } from "@/components/formFields";
 import { useParams, useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import * as veiculoService from '../../../services/veiculo'
+import * as veiculoService from '../../../../services/veiculo'
 import * as yup from 'yup'
-import { Veiculo } from "@/app/types/veiculo";
+import { Veiculo } from "@/types/veiculo";
 
 const schema = yup.object({
   placa: yup.string().required(`This field is required`),

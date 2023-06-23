@@ -1,4 +1,4 @@
-import { Cliente, CreateClienteRes, UpdateClienteRes } from "@/app/types/cliente";
+import { Cliente, CreateClienteRes, UpdateClienteRes } from "@/types/cliente";
 import axios from './axios-config'
 
 export const getClientes = async () => {

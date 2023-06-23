@@ -1,10 +1,10 @@
 "use client"
 import * as yup from "yup"
-import * as clienteService from "../../../services/cliente"
+import * as clienteService from "../../../../services/cliente"
 import { useParams, useRouter } from "next/navigation";
-import { Cliente } from "@/app/types/cliente";
+import { Cliente } from "@/types/cliente";
 import React from "react";
-import { ClienteForm } from "@/app/Components/formFields";
+import { ClienteForm } from "@/components/formFields";
 import { useFormik } from "formik";
 
 const schema = yup.object().shape({

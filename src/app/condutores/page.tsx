@@ -1,5 +1,5 @@
 "use client"
-import TableGlobal from "../Components/table";
+import TableGlobal from "../../components/table";
 import React from "react";
 
 const tableHeads = ['Nome', 'Numero da Habilitacao', 'Catergoria da Habilitacao', 'Vencimento da Habilitacao']
